@@ -3,10 +3,9 @@
 import networkx as nx
 from heapq import heappop, heappush
 import numpy as np
-import matplotlib.pyplot as plt
 
 
-def prim (G, root = '1'): 
+def prim (G, root = '100'): 
     push = heappush
     pop = heappop
     
@@ -27,17 +26,18 @@ def prim (G, root = '1'):
     for n in nodes: 
         push(Q, (aux.node[n]['lambda'], n))
     
-    while Q: 
-        u = pop(Q)
+    while Q:
+        u = pop(Q)       
         u = u[1]
         visited.append(u)
         for v in aux.neighbors(u):
-            if v not in visited and aux.node[u]['lambda'] > aux[u][v]['weight']: 
+            if v not in visited and aux.node[v]['lambda'] > aux[u][v]['weight']:
                 # tiro atual da fila 
                 Q.remove((aux.node[v]['lambda'], v))
                 aux.node[v]['lambda'] = aux[u][v]['weight'] # atualiza peso
                 aux.node[v]['pi'] = u   # atualiza predecessor
                 push(Q, (aux.node[v]['lambda'], v)) # atualiza valores na fila
+    
     mst = nx.Graph()
     for v in aux.nodes():
         mst.add_node(v)
@@ -49,8 +49,9 @@ def prim (G, root = '1'):
     
 def calcular_peso(T): 
     peso = 0
-    for v in T.edges():
-        peso += v['weight']
+    dict_pesos = nx.get_edge_attributes(T, 'weight')
+    for v in T.edges(): 
+        peso += dict_pesos[v]
     return peso
         
         
@@ -60,7 +61,7 @@ def main ():
     prim_G = prim(G)
     peso = calcular_peso(prim_G)
     print("Peso:",peso)
-    nx.draw(prim_G)
+    print(nx.is_forest(prim_G))
    
   
     
