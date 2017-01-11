@@ -48,13 +48,20 @@ def prim (G, root = '1'):
     return mst 
     
 def calcular_peso(T): 
-    print (T.edges())
+    peso = 0
+    for v in T.edges():
+        peso += v['weight']
+    return peso
+        
         
 
 def main ():
     G = nx.read_weighted_edgelist('facebook.edgelist')
     prim_G = prim(G)
+    peso = calcular_peso(prim_G)
+    print("Peso:",peso)
     nx.draw(prim_G)
+   
   
     
 if __name__ == '__main__': 
