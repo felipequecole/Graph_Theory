@@ -2,10 +2,10 @@
 
 import networkx as nx
 from heapq import heappop, heappush
-import numpy as np
+import sys
 
 
-def prim (G, root = '100'): 
+def prim (G, root = '1'): 
     push = heappush
     pop = heappop
     
@@ -14,7 +14,7 @@ def prim (G, root = '100'):
     
     for n in nodes:
         # iniciar todos os vertices com lambda = infinito e sem predecessor
-        aux.node[n]['lambda'] = np.Infinity
+        aux.node[n]['lambda'] = sys.float_info.max
         aux.node[n]['pi'] = None
     
     aux.node[root]['lambda'] = 0
@@ -49,9 +49,9 @@ def prim (G, root = '100'):
     
 def calcular_peso(T): 
     peso = 0
-    dict_pesos = nx.get_edge_attributes(T, 'weight')
+    pesos = nx.get_edge_attributes(T, 'weight')
     for v in T.edges(): 
-        peso += dict_pesos[v]
+        peso += pesos[v]
     return peso
         
         
